@@ -1,6 +1,5 @@
 package com.manning.nettyinaction.chapter6;
 
-
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -12,15 +11,14 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class WriteHandler extends ChannelHandlerAdapter {
 
-    private ChannelHandlerContext ctx;
+	private ChannelHandlerContext ctx;
 
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) {
-        this.ctx = ctx;
-    }
+	@Override
+	public void handlerAdded(ChannelHandlerContext ctx) {
+		this.ctx = ctx;
+	}
 
-    public void send(String msg) {
-        ctx.writeAndFlush(msg);
-    }
+	public void send(String msg) {
+		ctx.writeAndFlush(msg);
+	}
 }
-

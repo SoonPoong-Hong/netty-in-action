@@ -16,16 +16,14 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 @ChannelHandler.Sharable
 public class NotSharableHandler extends ChannelInboundHandlerAdapter {
-    private int count;
+	private int count;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        count++;
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) {
+		count++;
 
-        System.out.println("inboundBufferUpdated(...) called the "
-        + count + " time");
-        ctx.fireChannelRead(msg);
-    }
+		System.out.println("inboundBufferUpdated(...) called the " + count + " time");
+		ctx.fireChannelRead(msg);
+	}
 
 }
-
