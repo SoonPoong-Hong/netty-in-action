@@ -16,31 +16,32 @@ import java.net.InetSocketAddress;
  */
 public class BootstrapClient {
 
-    public void bootstrap() {
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
-                .handler(new SimpleChannelInboundHandler<ByteBuf>() {
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
-                        System.out.println("Reveived data");
-                    }
-                });
-        ChannelFuture future = bootstrap.connect(new InetSocketAddress("www.manning.com", 80));
-        future.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                if (channelFuture.isSuccess()) {
-                    System.out.println("Connection established");
-                } else {
-                    System.err.println("Connection attempt failed");
-                    channelFuture.cause().printStackTrace();
-                }
-            }
-        });
-    }
+	public void bootstrap() {
+		Bootstrap bootstrap = new Bootstrap();
+		bootstrap.group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
+				.handler(new SimpleChannelInboundHandler<ByteBuf>() {
+					@Override
+					protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf)
+							throws Exception {
+						System.out.println("Reveived data");
+					}
+				});
+		ChannelFuture future = bootstrap.connect(new InetSocketAddress("www.manning.com", 80));
+		future.addListener(new ChannelFutureListener() {
+			@Override
+			public void operationComplete(ChannelFuture channelFuture) throws Exception {
+				if (channelFuture.isSuccess()) {
+					System.out.println("Connection established");
+				} else {
+					System.err.println("Connection attempt failed");
+					channelFuture.cause().printStackTrace();
+				}
+			}
+		});
+	}
 
-    public static void main(String[] args) {
-        BootstrapClient client = new BootstrapClient();
-        client.bootstrap();
-    }
+	public static void main(String[] args) {
+		BootstrapClient client = new BootstrapClient();
+		client.bootstrap();
+	}
 }

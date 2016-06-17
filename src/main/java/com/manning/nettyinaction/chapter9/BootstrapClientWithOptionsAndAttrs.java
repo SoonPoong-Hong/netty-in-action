@@ -16,26 +16,27 @@ import java.net.InetSocketAddress;
  * @author <a href="mailto:norman.maurer@googlemail.com">Norman Maurer</a>
  */
 public class BootstrapClientWithOptionsAndAttrs {
-    public void bootstrap() {
-        final AttributeKey<Integer> id = new AttributeKey<Integer>("ID");
+	public void bootstrap() {
+		final AttributeKey<Integer> id = new AttributeKey<Integer>("ID");
 
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
-                .handler(new SimpleChannelInboundHandler<ByteBuf>() {
-                    @Override
-                    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-                       Integer idValue = ctx.channel().attr(id).get();
-                        // do something  with the idValue
-                    }
+		Bootstrap bootstrap = new Bootstrap();
+		bootstrap.group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
+				.handler(new SimpleChannelInboundHandler<ByteBuf>() {
+					@Override
+					public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+						Integer idValue = ctx.channel().attr(id).get();
+						// do something with the idValue
+					}
 
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
-                        System.out.println("Reveived data");
-                    }
-                });
-        bootstrap.option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
+					@Override
+					protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf)
+							throws Exception {
+						System.out.println("Reveived data");
+					}
+				});
+		bootstrap.option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
 
-        ChannelFuture future = bootstrap.connect(new InetSocketAddress("www.manning.com", 80));
-        future.syncUninterruptibly();
-    }
+		ChannelFuture future = bootstrap.connect(new InetSocketAddress("www.manning.com", 80));
+		future.syncUninterruptibly();
+	}
 }

@@ -15,26 +15,27 @@ import java.net.InetSocketAddress;
  * @author <a href="mailto:norman.maurer@googlemail.com">Norman Maurer</a>
  */
 public class BootstrapServer {
-    public void bootstrap() {
-        ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(new NioEventLoopGroup(), new NioEventLoopGroup()).channel(NioServerSocketChannel.class)
-                .childHandler(new SimpleChannelInboundHandler<ByteBuf>() {
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
-                        System.out.println("Reveived data");
-                    }
-                });
-        ChannelFuture future = bootstrap.bind(new InetSocketAddress(8080));
-        future.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                if (channelFuture.isSuccess()) {
-                    System.out.println("Server bound");
-                } else {
-                    System.err.println("Bound attempt failed");
-                    channelFuture.cause().printStackTrace();
-                }
-            }
-        });
-    }
+	public void bootstrap() {
+		ServerBootstrap bootstrap = new ServerBootstrap();
+		bootstrap.group(new NioEventLoopGroup(), new NioEventLoopGroup()).channel(NioServerSocketChannel.class)
+				.childHandler(new SimpleChannelInboundHandler<ByteBuf>() {
+					@Override
+					protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf)
+							throws Exception {
+						System.out.println("Reveived data");
+					}
+				});
+		ChannelFuture future = bootstrap.bind(new InetSocketAddress(8080));
+		future.addListener(new ChannelFutureListener() {
+			@Override
+			public void operationComplete(ChannelFuture channelFuture) throws Exception {
+				if (channelFuture.isSuccess()) {
+					System.out.println("Server bound");
+				} else {
+					System.err.println("Bound attempt failed");
+					channelFuture.cause().printStackTrace();
+				}
+			}
+		});
+	}
 }

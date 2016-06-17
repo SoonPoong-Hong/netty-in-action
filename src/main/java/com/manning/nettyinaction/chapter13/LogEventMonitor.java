@@ -16,45 +16,44 @@ import java.net.InetSocketAddress;
  */
 public class LogEventMonitor {
 
-    private final Bootstrap bootstrap;
-    private final EventLoopGroup group;
-    public LogEventMonitor(InetSocketAddress address) {
-        group = new NioEventLoopGroup();
-        bootstrap = new Bootstrap();
-        bootstrap.group(group)
-                .channel(NioDatagramChannel.class)
-                .option(ChannelOption.SO_BROADCAST, true)
-                .handler(new ChannelInitializer<Channel>() {
-                    @Override
-                    protected void initChannel(Channel channel) throws Exception {
-                        ChannelPipeline pipeline = channel.pipeline();
-                        pipeline.addLast(new LogEventDecoder());
-                        pipeline.addLast(new LogEventHandler());
-                    }
-                }).localAddress(address);
+	private final Bootstrap bootstrap;
+	private final EventLoopGroup group;
 
-    }
+	public LogEventMonitor(InetSocketAddress address) {
+		group = new NioEventLoopGroup();
+		bootstrap = new Bootstrap();
+		bootstrap.group(group).channel(NioDatagramChannel.class).option(ChannelOption.SO_BROADCAST, true)
+				.handler(new ChannelInitializer<Channel>() {
+					@Override
+					protected void initChannel(Channel channel) throws Exception {
+						ChannelPipeline pipeline = channel.pipeline();
+						pipeline.addLast(new LogEventDecoder());
+						pipeline.addLast(new LogEventHandler());
+					}
+				}).localAddress(address);
 
-    public Channel bind() {
-        return bootstrap.bind().syncUninterruptibly().channel();
-    }
+	}
 
-    public void stop() {
-        group.shutdownGracefully();
-    }
+	public Channel bind() {
+		return bootstrap.bind().syncUninterruptibly().channel();
+	}
 
-    public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
-            throw new IllegalArgumentException("Usage: LogEventMonitor <port>");
-        }
-        LogEventMonitor monitor = new LogEventMonitor(new InetSocketAddress(Integer.parseInt(args[0])));
-        try {
-            Channel channel = monitor.bind();
-            System.out.println("LogEventMonitor running");
+	public void stop() {
+		group.shutdownGracefully();
+	}
 
-            channel.closeFuture().await();
-        } finally {
-            monitor.stop();
-        }
-    }
+	public static void main(String[] args) throws Exception {
+		if (args.length != 1) {
+			throw new IllegalArgumentException("Usage: LogEventMonitor <port>");
+		}
+		LogEventMonitor monitor = new LogEventMonitor(new InetSocketAddress(Integer.parseInt(args[0])));
+		try {
+			Channel channel = monitor.bind();
+			System.out.println("LogEventMonitor running");
+
+			channel.closeFuture().await();
+		} finally {
+			monitor.stop();
+		}
+	}
 }

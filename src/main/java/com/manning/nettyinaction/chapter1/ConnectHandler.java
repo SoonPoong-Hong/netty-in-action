@@ -9,9 +9,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @author <a href="mailto:norman.maurer@googlemail.com">Norman Maurer</a>
  */
 public class ConnectHandler extends ChannelInboundHandlerAdapter {
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {   //1
-        System.out.println(
-                "Client " + ctx.channel().remoteAddress() + " connected");
-    }
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception { // 1
+		System.out.println("Client " + ctx.channel().remoteAddress() + " connected");
+	}
 }

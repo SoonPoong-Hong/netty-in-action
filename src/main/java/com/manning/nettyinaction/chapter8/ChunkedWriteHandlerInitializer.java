@@ -15,25 +15,25 @@ import java.io.FileInputStream;
  * @author <a href="mailto:norman.maurer@googlemail.com">Norman Maurer</a>
  */
 public class ChunkedWriteHandlerInitializer extends ChannelInitializer<Channel> {
-    private final File file;
+	private final File file;
 
-    public ChunkedWriteHandlerInitializer(File file) {
-        this.file = file;
-    }
+	public ChunkedWriteHandlerInitializer(File file) {
+		this.file = file;
+	}
 
-    @Override
-    protected void initChannel(Channel ch) throws Exception {
-        ChannelPipeline pipeline = ch.pipeline();
-        pipeline.addLast(new ChunkedWriteHandler());
-        pipeline.addLast(new WriteStreamHandler());
-    }
+	@Override
+	protected void initChannel(Channel ch) throws Exception {
+		ChannelPipeline pipeline = ch.pipeline();
+		pipeline.addLast(new ChunkedWriteHandler());
+		pipeline.addLast(new WriteStreamHandler());
+	}
 
-    public final class WriteStreamHandler extends ChannelInboundHandlerAdapter {
+	public final class WriteStreamHandler extends ChannelInboundHandlerAdapter {
 
-        @Override
-        public void channelActive(ChannelHandlerContext ctx) throws Exception {
-            super.channelActive(ctx);
-            ctx.writeAndFlush(new ChunkedStream(new FileInputStream(file)));
-        }
-    }
+		@Override
+		public void channelActive(ChannelHandlerContext ctx) throws Exception {
+			super.channelActive(ctx);
+			ctx.writeAndFlush(new ChunkedStream(new FileInputStream(file)));
+		}
+	}
 }

@@ -17,37 +17,36 @@ import java.net.InetSocketAddress;
  */
 public class ReregisterChannel {
 
-    public void reregister() {
-        EventLoopGroup group = new NioEventLoopGroup();
-        final EventLoopGroup group2 = new NioEventLoopGroup();
+	public void reregister() {
+		EventLoopGroup group = new NioEventLoopGroup();
+		final EventLoopGroup group2 = new NioEventLoopGroup();
 
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(group).channel(NioSocketChannel.class)
-                .handler(new SimpleChannelInboundHandler<ByteBuf>() {
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) throws Exception {
-                        ctx.pipeline().remove(this);
+		Bootstrap bootstrap = new Bootstrap();
+		bootstrap.group(group).channel(NioSocketChannel.class).handler(new SimpleChannelInboundHandler<ByteBuf>() {
+			@Override
+			protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) throws Exception {
+				ctx.pipeline().remove(this);
 
-                        ChannelFuture cf = ctx.deregister();
-                        cf.addListener(new ChannelFutureListener() {
-                            @Override
-                            public void operationComplete(ChannelFuture future) throws Exception {
-                                group2.register(future.channel());
-                            }
-                        });
-                    }
-                });
-        ChannelFuture future = bootstrap.connect(new InetSocketAddress("www.manning.com", 80));
-        future.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                if (channelFuture.isSuccess()) {
-                    System.out.println("Connection established");
-                } else {
-                    System.err.println("Connection attempt failed");
-                    channelFuture.cause().printStackTrace();
-                }
-            }
-        });
-    }
+				ChannelFuture cf = ctx.deregister();
+				cf.addListener(new ChannelFutureListener() {
+					@Override
+					public void operationComplete(ChannelFuture future) throws Exception {
+						group2.register(future.channel());
+					}
+				});
+			}
+		});
+		ChannelFuture future = bootstrap.connect(new InetSocketAddress("www.manning.com", 80));
+		future.addListener(new ChannelFutureListener() {
+			@Override
+			public void operationComplete(ChannelFuture channelFuture) throws Exception {
+				if (channelFuture.isSuccess()) {
+					System.out.println("Connection established");
+				} else {
+					System.err.println("Connection attempt failed");
+					channelFuture.cause().printStackTrace();
+				}
+			}
+		});
+	}
 }

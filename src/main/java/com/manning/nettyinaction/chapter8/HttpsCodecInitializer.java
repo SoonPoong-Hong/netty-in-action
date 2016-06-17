@@ -15,24 +15,24 @@ import javax.net.ssl.SSLEngine;
  */
 public class HttpsCodecInitializer extends ChannelInitializer<Channel> {
 
-    private final SslContext context;
-    private final boolean client;
+	private final SslContext context;
+	private final boolean client;
 
-    public HttpsCodecInitializer(SslContext context, boolean client) {
-        this.context = context;
-        this.client = client;
-    }
+	public HttpsCodecInitializer(SslContext context, boolean client) {
+		this.context = context;
+		this.client = client;
+	}
 
-    @Override
-    protected void initChannel(Channel ch) throws Exception {
-        ChannelPipeline pipeline = ch.pipeline();
-        SSLEngine engine = context.newEngine(ch.alloc());
-        pipeline.addFirst("ssl", new SslHandler(engine));
+	@Override
+	protected void initChannel(Channel ch) throws Exception {
+		ChannelPipeline pipeline = ch.pipeline();
+		SSLEngine engine = context.newEngine(ch.alloc());
+		pipeline.addFirst("ssl", new SslHandler(engine));
 
-        if (client) {
-            pipeline.addLast("codec", new HttpClientCodec());
-        } else {
-            pipeline.addLast("codec", new HttpServerCodec());
-        }
-    }
+		if (client) {
+			pipeline.addLast("codec", new HttpClientCodec());
+		} else {
+			pipeline.addLast("codec", new HttpServerCodec());
+		}
+	}
 }

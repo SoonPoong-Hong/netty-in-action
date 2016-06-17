@@ -9,13 +9,10 @@ import io.netty.handler.codec.MessageToByteEncoder;
  *
  * @author <a href="mailto:norman.maurer@googlemail.com">Norman Maurer</a>
  */
-public class CharToByteEncoder extends
-        MessageToByteEncoder<Character> {
+public class CharToByteEncoder extends MessageToByteEncoder<Character> {
 
-    @Override
-    public void encode(ChannelHandlerContext ctx, Character msg, ByteBuf out)
-            throws Exception {
-        out.writeChar(msg);
-    }
+	@Override
+	public void encode(ChannelHandlerContext ctx, Character msg, ByteBuf out) throws Exception {
+		out.writeChar(msg);
+	}
 }
-

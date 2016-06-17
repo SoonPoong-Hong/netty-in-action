@@ -11,21 +11,20 @@ import java.util.List;
  */
 public class FixedLengthFrameDecoder extends ByteToMessageDecoder {
 
-    private final int frameLength;
+	private final int frameLength;
 
-    public FixedLengthFrameDecoder(int frameLength) {
-        if (frameLength <= 0) {
-            throw new IllegalArgumentException(
-                    "frameLength must be a positive integer: " + frameLength);
-        }
-        this.frameLength = frameLength;
-    }
+	public FixedLengthFrameDecoder(int frameLength) {
+		if (frameLength <= 0) {
+			throw new IllegalArgumentException("frameLength must be a positive integer: " + frameLength);
+		}
+		this.frameLength = frameLength;
+	}
 
-    @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        if (in.readableBytes() >= frameLength) {
-            ByteBuf buf = in.readBytes(frameLength);
-            out.add(buf);
-        }
-    }
+	@Override
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+		if (in.readableBytes() >= frameLength) {
+			ByteBuf buf = in.readBytes(frameLength);
+			out.add(buf);
+		}
+	}
 }

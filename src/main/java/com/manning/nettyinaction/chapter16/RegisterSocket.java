@@ -9,14 +9,13 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public class RegisterSocket {
 
-    public void register(java.nio.channels.SocketChannel socket, EventLoopGroup egroup) {
-        java.nio.channels.SocketChannel mySocket = socket;
+	public void register(java.nio.channels.SocketChannel socket, EventLoopGroup egroup) {
+		java.nio.channels.SocketChannel mySocket = socket;
 
-        SocketChannel ch = new NioSocketChannel(mySocket);
-        EventLoopGroup group = egroup;
-        group.register(ch);
+		SocketChannel ch = new NioSocketChannel(mySocket);
+		EventLoopGroup group = egroup;
+		group.register(ch);
 
-    }
-
+	}
 
 }
